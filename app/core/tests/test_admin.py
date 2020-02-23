@@ -23,9 +23,35 @@ class AdminSiteTests(TestCase):
         )
 
     def test_user_listed(self):
-        """Test that users are listed on user page"""
+        """
+        Test yang user tersenarai dalam User Page
+        Input: res
+        Output: check yang res ada self.user.name && self.user.email
+        """
         url = reverse('admin:core_user_changelist')
         res = self.client.get(url)
 
         self.assertContains(res, self.user.name)
         self.assertContains(res, self.user.email)
+
+    def test_user_page_change(self):
+        """
+        Test yang 'User Edit Page' dapat guna
+        Input : extract (get) self.client produce reverse url
+        Output: status code = 200
+        """
+        url = reverse('admin:core_user_change', args=[self.user.id])
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, 200)
+
+    def test_create_user_page(self):
+        """
+        Test yang Create User Page dapat guna
+        Input: Retrieve/get admin:core_user_add
+        Output: status code = 200
+        """
+        url = reverse('admin:core_user_add')
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, 200)
